@@ -1,2 +1,2 @@
-FILE_PATH = 'promocodes.json'
+# Набор символов для генерации кода
 ALPHABET_FOR_PROMOCODE = 'ABCDEFGHIGKLMNOPQRSTUVWXWZ1234567890'

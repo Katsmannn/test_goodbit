@@ -10,6 +10,9 @@ from .utils import create_promocode, search_promocode
 
 @api_view(['POST'])
 def generate_promocode(request):
+    '''
+    Генерация промокода и сохранение в файл settings.FILE_PATH.
+    '''
     group = request.data.get('group')
     amount = request.data.get('amount')
     if group is None or amount is None:
@@ -43,6 +46,9 @@ def generate_promocode(request):
 
 @api_view(['POST'])
 def check_promocode(request):
+    '''
+    Проверка наличия промокода в файле settings.FILE_PATH
+    '''
     promocode = request.data.get('code')
     if promocode is None:
         return Response("Отсутствует обязательный параметр code")
