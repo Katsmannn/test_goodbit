@@ -1,3 +1,4 @@
+import os.path
 import shutil
 import tempfile
 
@@ -33,24 +34,40 @@ class PromocodeTests(TestCase):
         self.client = Client()
 
     def test_generate_promocode_not_correct_data(self):
+        '''
+        Тест запроса генерации промокода с неполными параметрами.
+        В запросе отсутствуют поля group или amount.
+        '''
         response = self.client.post('/generate/', self.not_correct_data[0])
         self.assertEqual(
             response.data, 'Отсутствуют обязательные параметры group и amount'
         )
 
     def test_check_promocode_not_correct_data(self):
+        '''
+        Тест запроса проверки промокода с неполными параметрами.
+        В запросе отсутствует поле code.
+        '''
         response = self.client.post('/check/')
         self.assertEqual(
             response.data, 'Отсутствует обязательный параметр code'
         )
 
     def test_generate_promocode_correct_data(self):
+        '''
+        Тест ответа при корректном запросе генерации промокода.
+        '''
         response = self.client.post('/generate/', self.correct_data[0])
+        is_file_created = os.path.exists(settings.FILE_PATH)
         self.assertIsNotNone(
             response.data.get('code')
         )
+        self.assertTrue(is_file_created)
 
     def test_check_promocode_correct_data(self):
+        '''
+        Тест ответа при запросе проверки промокода.
+        '''
         data = self.correct_data[0]
         group = data.get('group')
         code = self.client.post('/generate/', data).data.get('code')
